@@ -11,6 +11,46 @@ Create variables for regression
 	gen female = 1*(resp_gender == 2)
 	gen college_grad = 1*(usedu3 > 9)
 
+Graph perceived_concern
+    graph bar (mean) perceived_concern, over(party_id) ///
+        title("Mean Perceived Concern by Party ID") ///
+        ytitle("Mean Perceived Concern") ///
+        b2title("Party ID") ///
+        name(mean_perceived_concern, replace)
+
 Run regression and store results;
 output the results in a table: 
-	reg perceived_concern female college_grad, robust
+	
+    reg perceived_concern female, robust
+    reg perceived_concern college_grad, robust
+
+    gen cnn_msnbc = 0
+    replace cnn_msnbc = 1 if grid_gts3_1_gts3 >= 3
+    reg perceived_concern cnn_msnbc, robust
+
+    gen fox = 0
+    replace fox = 1 if grid_gts3_6_gts3 >= 3
+    reg perceived_concern fox, robust
+
+    gen under_thirty = 0
+    replace under_thirty = 1 if resp_age < 30
+    reg perceived_concern under_thirty, robust
+
+    gen thirties = 0
+    replace thirties = 1 if resp_age >= 30 | resp_age < 40
+    reg perceived_concern thirties, robust
+
+    gen forties = 0
+    replace forties = 1 if resp_age >= 40 | resp_age < 50
+    reg perceived_concern forties, robust
+
+    gen fifties = 0
+    replace fifties = 1 if resp_age >= 50 | resp_age < 60
+    reg perceived_concern fifties, robust
+
+    gen sixties = 0
+    replace sixties = 1 if resp_age >= 60 | resp_age < 70
+    reg perceived_concern sixties, robust
+
+    gen over_seventy = 0
+    replace over_seventy = 1 if resp_age >= 70

@@ -1,0 +1,70 @@
+* Assignment 1
+
+clear
+import delimited "./../data/41467_2022_32412_MOESM4_ESM.csv"
+
+gen perceived_concern = grid_gts1_1_gts1
+gen female = 1*(resp_gender == 2)
+gen college_grad = 1*(usedu3 > 9)
+
+gen party_id = qpid1
+replace party_id = 3 if party_id == 4 | party_id == 5
+
+label define party 1 "Democrat" 2 "Republican" 3 "Independent"
+label values party_id party
+tab party_id, m
+
+graph bar (mean) perceived_concern, over(party_id)
+graph box perceived_concern, over(party_id)
+
+graph bar (mean) perceived_concern, over(party_id) ///
+    title("Mean Perceived Concern by Party ID") ///
+    ytitle("Mean Perceived Concern") ///
+    b2title("Party ID") ///
+    name(mean_perceived_concern, replace)
+	
+reg perceived_concern female, robust
+
+reg perceived_concern college_grad, robust
+
+gen cnn_msnbc = 0
+replace cnn_msnbc = 1 if grid_gts3_1_gts3 >= 3
+reg perceived_concern cnn_msnbc, robust
+
+gen fox = 0
+replace fox = 1 if grid_gts3_6_gts3 >= 3
+reg perceived_concern fox, robust
+
+gen under_thirty = 0
+replace under_thirty = 1 if resp_age < 30
+reg perceived_concern under_thirty, robust
+
+gen thirties = 0
+replace thirties = 1 if resp_age >= 30 | resp_age < 40
+reg perceived_concern thirties, robust
+
+gen forties = 0
+replace forties = 1 if resp_age >= 40 | resp_age < 50
+reg perceived_concern forties, robust
+
+gen fifties = 0
+replace fifties = 1 if resp_age >= 50 | resp_age < 60
+reg perceived_concern fifties, robust
+
+gen sixties = 0
+replace sixties = 1 if resp_age >= 60 | resp_age < 70
+reg perceived_concern sixties, robust
+
+gen over_seventy = 0
+replace over_seventy = 1 if resp_age >= 70
+
+// household income = USHHI3
+// graph box perceived_concern, over(ushhi2)
+
+gen tercile = 0
+replace tercile = 1 if 
+replace tercile = 2 if 
+replace tercile = 3 if 
+
+label define terc_label 1 "top" 2 "middle" 3 "bottom"
+label values tercile terc_label
