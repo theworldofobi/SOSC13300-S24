@@ -12,6 +12,9 @@ Create variables for regression
 	gen college_grad = 1*(usedu3 > 9)
 
 Graph perceived_concern
+    gen party_id = qpid1
+    replace party_id = 3 if party_id == 4 | party_id == 5
+    
     graph bar (mean) perceived_concern, over(party_id) ///
         title("Mean Perceived Concern by Party ID") ///
         ytitle("Mean Perceived Concern") ///

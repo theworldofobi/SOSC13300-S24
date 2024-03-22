@@ -1,0 +1,33 @@
+{smcl}
+{txt}{sf}{ul off}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/obiobetta/Downloads/sosc133/SOSC13300-S24/assignments/Sparkman_et_al_assignment_stub_stata.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}22 Mar 2024, 14:55:09
+{txt}
+{com}. //_1
+. clear
+{txt}
+{com}. import delimited "./../data/41467_2022_32412_MOESM4_ESM.csv"
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{text}(44 vars, 6,119 obs)
+
+{com}. //_2
+. gen perceived_concern = grid_gts1_1_gts1
+{txt}
+{com}. gen female = 1*(resp_gender == 2)
+{txt}
+{com}. gen college_grad = 1*(usedu3 > 9)
+{txt}
+{com}. //_3
+. graph bar (mean) perceived_concern, over(party_id) ///
+>     title("Mean Perceived Concern by Party ID") ///
+>     ytitle("Mean Perceived Concern") ///
+>     b2title("Party ID") ///
+>     name(mean_perceived_concern, replace)
+{err}variable {bf}party_id{sf} not found
+{txt}{search r(111), local:r(111);}
+
+end of do-file
+
+{com}. 
